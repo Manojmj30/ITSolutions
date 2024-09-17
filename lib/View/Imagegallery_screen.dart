@@ -66,7 +66,9 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
   Widget build(BuildContext context) {
     final provider = Provider.of<PixabayProvider>(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text('Image Gallery'),
       ),
       body: Column(
@@ -129,8 +131,16 @@ class ImageTile extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(5)
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(3,3,3,0),
@@ -151,7 +161,7 @@ class ImageTile extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 4),
+                padding: const EdgeInsets.symmetric(vertical: 7.0,horizontal: 4),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -159,7 +169,7 @@ class ImageTile extends StatelessWidget {
                       children: [
                         const Icon(Icons.thumb_up_off_alt_sharp,color: Colors.grey,size:15),
                         const SizedBox(width:5),
-                        Text('${image.likes}', overflow: TextOverflow.ellipsis,style: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold)),
+                        Text('${image.likes}', overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colors.grey,fontSize: 10,fontWeight: FontWeight.bold)),
                       ],
                     ),
 
@@ -167,7 +177,7 @@ class ImageTile extends StatelessWidget {
                       children: [
                         const Icon(Icons.visibility,color: Colors.grey,size:15),
                         const SizedBox(width:5),
-                        Text('${image.views}', overflow: TextOverflow.ellipsis,style: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
+                        Text('${image.views}', overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colors.grey,fontSize: 10,fontWeight: FontWeight.bold),),
                       ],
                     ),
                   ],
