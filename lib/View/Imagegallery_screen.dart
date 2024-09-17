@@ -84,21 +84,24 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
             ),
           ),
           Expanded(
-            child: GridView.builder(
-              controller: _scrollController,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: (MediaQuery.of(context).size.width / 150).floor(),
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                childAspectRatio: 1,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(5,0,5,0),
+              child: GridView.builder(
+                controller: _scrollController,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: (MediaQuery.of(context).size.width / 150).floor(),
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 1,
+                ),
+                itemCount: provider.images.length + (provider.hasMore ? 1 : 0),
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == provider.images.length) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return ImageTile(image: provider.images[index]);
+                },
               ),
-              itemCount: provider.images.length + (provider.hasMore ? 1 : 0),
-              itemBuilder: (BuildContext context, int index) {
-                if (index == provider.images.length) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return ImageTile(image: provider.images[index]);
-              },
             ),
           ),
         ],
@@ -125,29 +128,48 @@ class ImageTile extends StatelessWidget {
         );
       },
       child: Container(
-        color: Colors.grey[100],
+        decoration: BoxDecoration(
+            color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(5)
+        ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(7,0,7,0),
+          padding: const EdgeInsets.fromLTRB(3,3,3,0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: 100,
-                child: CachedNetworkImage(
-                  imageUrl: image.imageUrl,
-                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  fit: BoxFit.cover,
+              ClipRRect(
+                 borderRadius: BorderRadius.circular(5),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 100,
+                  child: CachedNetworkImage(
+                    imageUrl: image.imageUrl,
+                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text('Views: ${image.views}', overflow: TextOverflow.ellipsis,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                    Text('Likes: ${image.likes}', overflow: TextOverflow.ellipsis,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold)),
+                    Row(
+                      children: [
+                        const Icon(Icons.thumb_up_off_alt_sharp,color: Colors.grey,size:15),
+                        const SizedBox(width:5),
+                        Text('${image.likes}', overflow: TextOverflow.ellipsis,style: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+
+                    Row(
+                      children: [
+                        const Icon(Icons.visibility,color: Colors.grey,size:15),
+                        const SizedBox(width:5),
+                        Text('${image.views}', overflow: TextOverflow.ellipsis,style: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
+                      ],
+                    ),
                   ],
                 ),
               ),
