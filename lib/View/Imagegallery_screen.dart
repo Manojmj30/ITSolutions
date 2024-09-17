@@ -56,16 +56,15 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _scrollController.dispose();
     _searchController.dispose();
-    _debounce?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PixabayProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image Gallery'),
@@ -93,7 +92,7 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
                 mainAxisSpacing: 8.0,
                 childAspectRatio: 1,
               ),
-              itemCount: provider.images.length + (provider.isLoading ? 1 : 0),
+              itemCount: provider.images.length + (provider.hasMore ? 1 : 0),
               itemBuilder: (BuildContext context, int index) {
                 if (index == provider.images.length) {
                   return const Center(child: CircularProgressIndicator());

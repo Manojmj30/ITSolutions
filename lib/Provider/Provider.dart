@@ -16,6 +16,7 @@ class PixabayProvider extends ChangeNotifier {
   Future<void> fetchImages({String? newQuery}) async {
     if (isLoading) return;
     isLoading = true;
+
     if (newQuery != null) {
       query = newQuery;
       page = 1;
@@ -24,8 +25,7 @@ class PixabayProvider extends ChangeNotifier {
     }
     const apiKey = '45948798-97ac9d7e08e3ce6721df4cbfa';
     final response = await http.get(Uri.parse(
-        'https://pixabay.com/api/?key=$apiKey&q=$query&image_type=photo&per_page=100&page=$page'));
-
+        'https://pixabay.com/api/?key=$apiKey&q=$query&image_type=photo&per_page=30&page=$page'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       List newImages = (data['hits'] as List)
